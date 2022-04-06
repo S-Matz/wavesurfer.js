@@ -81,6 +81,7 @@ export default class SpectrogramPlugin {
         this.util = ws.util;
 
         this.frequenciesDataUrl = params.frequenciesDataUrl;
+        this.frequenciesJsonData = params.frequenciesJsonData;
         this._onScroll = e => {
             this.updateScroll(e);
         };
@@ -237,7 +238,9 @@ export default class SpectrogramPlugin {
 
     render() {
         this.updateCanvasStyle();
-
+        if (this.frequenciesJsonData) {
+            this.loadFrequenciesJsonData(this.frequenciesJsonData);
+        } else
         if (this.frequenciesDataUrl) {
             this.loadFrequenciesData(this.frequenciesDataUrl);
         } else {
@@ -338,6 +341,10 @@ export default class SpectrogramPlugin {
             // frequencies: [channel, sample, freq]
         }
         callback(frequencies, this);
+    }
+
+    loadFrequenciesJsonData(json){
+        this.drawSpectrogram(json, this);
     }
 
     loadFrequenciesData(url) {
